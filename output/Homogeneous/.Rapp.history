@@ -1,0 +1,1029 @@
+apropos(vegan)
+library(flexclust)
+?flexclust
+?kcca
+plot(summary(pca.2)$x[,1:2])
+class
+class(summary(pca.2)$x[,1:2])
+kcca(summary(pca.2)$x[,1:2])
+kcca(summary(pca.2)$x[,1:2], k=2)
+pca.2.clust <- kcca(summary(pca.2)$x[,1:2], k=2)
+names(pca.2.clust)
+summary(pca.2.clust)
+names(summary(pca.2.clust))
+data("Nclus")#
+plot(Nclus)
+cl1 = kcca(Nclus, k=4)#
+cl1
+image(cl1)
+points(Nclus)
+image(pca.2.clust)
+points(pca.2.clust)
+points(summary(pca.2)$x[,1:2])
+plot(summary(pca.2)$x[,1:2])  # note that it is unscaled, unlike biplot
+texty(summary(pca.2)$x[,1], summary(pca.2)$x[,2], 1)
+textxy(summary(pca.2)$x[,1], summary(pca.2)$x[,2], 1)  # add labels
+library(calibrate)
+summary(pca.2)$x[,1:2]
+rownames(summary(pca.2)$x[,1:2])
+rows(summary(pca.2)$x[,1:2])
+length(summary(pca.2)$x[,1])
+text(summary(pca.2)$x[,1:2], 1:length(summary(pca.2)$x[,1]))  # add row number as labels
+summary(pca.2)$x[,1:2]
+1:length(summary(pca.2)$x[,1])
+library(vegan)#
+data(varespec)#
+data(varechem)#
+veg.dist <- vegdist(varespec) # 24 sites x 44 species
+class(veg.dist)
+library(trk)
+?lattice()
+library(lattice)
+library(sp)
+?trk
+# Plot on top of Esri shapefiles imported into \code{sp} objects:#
+data(porpoisetrack)#
+data(denmark)#
+plot(denmark, add=FALSE, col=grey(0.97), axes=TRUE)#
+sp.porp <- as.SpatialPointsDataFrame(porpoisetrack)#
+plot(sp.porp , add=TRUE, col="red")#
+#
+# Make cropped plot:#
+dev.new()#
+plot(sp.porp , add=FALSE, col="red")#
+plot(denmark, add=TRUE, col=grey(0.97), axes=TRUE)#
+plot(sp.porp , add=TRUE, col="red")#
+axis(1); axis(2)#
+mtext("UTM coordinates", side=1, cex=0.8, line=2.5)
+# Plot on top of Esri shapefiles imported into \code{sp} objects:#
+data(porpoisetrack)#
+data(denmark)#
+plot(denmark, add=FALSE, col=grey(0.97), axes=TRUE)#
+sp.porp <- as.SpatialPointsDataFrame(porpoisetrack)#
+plot(sp.porp , add=TRUE, col="red")
+## Trim a map and add positions#
+dev.new()#
+library(lattice)#
+require(trk)#
+data(porpoisetrack)#
+data(denmark)#
+land <- list("sp.polygons", denmark, fill = "lightgrey")#
+trellis.par.set(c("red","blue","yellow","green","black")) # sets color ramp to bpy.colors()#
+scale = list("SpatialPolygonsRescale", layout.scale.bar(), #
+	offset = c(180500,329800), scale = 500, fill=c("transparent","black"), which = 1)#
+text1 = list("sp.text", c(180500,329900), "0", which = 1)#
+text2 = list("sp.text", c(181000,329900), "500 m", which = 1)#
+arrow = list("SpatialPolygonsRescale", layout.north.arrow(), #
+	offset = c(178750,332500), scale = 400)#
+ptr <- as.SpatialPointsDataFrame(porpoisetrack)#
+spplot(ptr["lc94"], do.log = FALSE,#
+	key.space = "bottom", #
+	sp.layout = list(land, scale, text1, text2),#
+	main = "Kattegat"#
+	# legend = list(right = list(fun = mapLegendGrob(layout.north.arrow())))#
+)
+# A simple example:#
+data(porpoisetrack)#
+pt <- porpoisetrack#
+id(pt) <- "Track for porpoise pttid 2000-04542"#
+plot(pt, type="n", cex.axis=0.7, sub="Elapsed time in hours", new.plot=TRUE)#
+points(pt, pch=5, col="darkgreen")#
+lines(pt, lwd=0.5, col="red")
+# Add a label to the points:#
+time <- as.POSIXct(paste(pt@data$year, "-", pt@data$month, "-", pt@data$day, " ", pt@data$hour, ":", pt@data$minute, ":", pt@data$second, sep=""))#
+time.hrs <- (unclass(time) - min(unclass(time))) / (60 * 60) # Elapsed time in hours#
+time.days <- round(time.hrs/24, 1)#
+text(pt@coords+c(12000, 3000), as.character(round(time.days, 2)), cex=0.6, col="red")
+# Plotting of lines on top of raster files (points with ARGOS colours):#
+data(greatbelt)#
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+	col.line = "black", #
+	lwd = 0.2,#
+	pch = 9,#
+	main = "Test plot", #
+	sub = "Plot of porpoisetrack with custom colours. Both track and raster with UTM coords."#
+)#
+# Colour code: DP = "black", G = "blue", A = "red", B = "darkred", #
+# "0" = "orange", "1" = "yellow", "2" = "green", "3" = "darkgreen"
+#
+library(trk)#
+# Plotting of lines on top of raster files (points with ARGOS colours):#
+data(greatbelt)#
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+#	col.line = "black", #
+#	lwd = 0.2,#
+#	pch = 9,#
+	main = "Test plot", #
+	sub = "Plot of porpoisetrack with custom colours. Both track and raster with UTM coords."#
+)#
+# Colour code: DP = "black", G = "blue", A = "red", B = "darkred", #
+# "0" = "orange", "1" = "yellow", "2" = "green", "3" = "darkgreen"
+library(trk)#
+# Plotting of lines on top of raster files (points with ARGOS colours):#
+data(greatbelt)#
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+	col.line = "black", #
+#	lwd = 0.2,#
+#	pch = 9,#
+	main = "Test plot", #
+#	sub = "Plot of porpoisetrack with custom colours. Both track and raster with UTM coords."#
+)#
+# Colour code: DP = "black", G = "blue", A = "red", B = "darkred", #
+# "0" = "orange", "1" = "yellow", "2" = "green", "3" = "darkgreen"
+#
+library(trk)#
+# Plotting of lines on top of raster files (points with ARGOS colours):#
+data(greatbelt)#
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+	col.line = "black", #
+#	lwd = 0.2,#
+#	pch = 9,#
+	main = "Test plot" #
+#	sub = "Plot of porpoisetrack with custom colours. Both track and raster with UTM coords."#
+)#
+# Colour code: DP = "black", G = "blue", A = "red", B = "darkred", #
+# "0" = "orange", "1" = "yellow", "2" = "green", "3" = "darkgreen"
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+	col.line = "black"#
+)
+moves(porpoisetrack)
+dev.new(width=12, height=6)#
+par(mfrow=c(1,2))#
+data(greatbelt)#
+data(porpoisetrack)#
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+	col.line = "black"#
+)#
+#
+moves(porpoisetrack)#
+plot(sp.porp , add=FALSE, col="red")#
+plot(denmark, add=TRUE, col=grey(0.97), axes=TRUE)
+points(sp.porp , add=FALSE, col="grey")
+A <- matrix(c(0,1,4,.7,0,0,0,.5,0), byrow=TRUE, ncol=3)#
+rownames(A) <- paste("r",1:2,sep="")#
+colnames(A) <- paste("c",1:2,sep="")#
+A#
+t(A)
+rownames(A) <- paste("r",1:3,sep="")#
+colnames(A) <- paste("c",1:3,sep="")
+A
+t(A)
+eigen(A) 			     # calculate eigenvalues and eigen vectors#
+Re(eigen(A)$values[1])  # real part of first eigenvalue#
+A %*% A  				 # matrix multiplication#
+A * A 		         # element-wise multiplication
+A
+n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.0
+n.1 <- A %*% n.0
+n.1
+3.5 %% 1
+mpow <- function(matr, pow) {#
+	if(!is.matrix(matr)) stop("The first element must be a matrix")#
+	if(dim(matr)[1]!=dim(matr)[2]) stop("Input matrix must be square")#
+	if(pow %% 1 !=0) stop("pow must be an integer")#
+	if(pow<=0) return(NA)	#
+	if(pow==1) return(matr)	#
+	for (i in 1:pow) {#
+		matr <- matr %*% matr#
+	}#
+	return(matr)#
+}
+n.1 <- A %*% n.0#
+n.2 <- A %*% n.1#
+n.3 <- A %*% n.2#
+n.4 <- A %*% n.3#
+n.5 <- A %*% n.4#
+n.6 <- A %*% n.5#
+n.7 <- A %*% n.6#
+n.8 <- A %*% n.7#
+n.9 <- A %*% n.8#
+n.10 <- A %*% n.9#
+n.11 <- A %*% n.10
+n.11
+list()
+n.ls <- list()
+n.ls
+?list
+n.ls[] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.ls
+n.0
+class(n.0)
+n.ls[[]] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.ls[] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.ls
+n.ls[1] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.ls[[1]] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.ls
+n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.0
+j
+j<-2
+n.ls[[1]] <- matrix(c(1, 0.01, 0.01), nrow=3)  # n.0
+n.ls
+	n.ls[[j]] <- A %*% n.ls[[j-1]]
+n.ls
+n.ls <- list()#
+n.ls[[1]] <- matrix(c(1, 0.01, 0.01), nrow=3)  # n.0#
+for(j in 2:20) {#
+	n.ls[[j]] <- A %*% n.ls[[j-1]]#
+}
+n.ls[[1]][1]
+c(n.ls[[j]][1], n.ls[[j-1]][1])
+plot(1:20, 1:20, type="n")#
+for(j in 2:20) {#
+	lines(c(j-1, j), c(n.ls[[j-1]][1], n.ls[[j]][1]))  #
+}
+plot(1:20, log10(1:20), type="n")#
+for(j in 2:20) {#
+	lines(c(j-1, j), c(n.ls[[j-1]][1], n.ls[[j]][1]))  #
+}
+plot(1:20, log10(1:20), ylim=c(0,3), type="n")#
+for(j in 2:20) {#
+	lines(c(j-1, j), c(n.ls[[j-1]][1], n.ls[[j]][1]))  #
+}
+plot(1:20, log10(1:20), ylim=c(0,6), type="n")#
+for(j in 2:20) {#
+	lines(c(j-1, j), c(n.ls[[j-1]][1], n.ls[[j]][1]))  #
+}
+plot(1:20, log10(1:20), ylim=c(0,6), type="n")#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  #
+}
+plot(1:20, log10(1:20), ylim=c(-1,3), type="n")#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  #
+}
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n")#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  # n in age grp 1#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][2], n.ls[[j]][2])), lty=2 )  # n in age grp 2  #
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][3], n.ls[[j]][3])), lty=3 )  # n in age grp 2  #
+}
+	xlab="Time", ylab=expression(paste(Log[10],"N"))
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10],"N"))#
+)#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  # n in age grp 1#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][2], n.ls[[j]][2])), lty=2 )  # n in age grp 2  #
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][3], n.ls[[j]][3])), lty=3 )  # n in age grp 2  #
+}
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10],ital(Log[])))#
+)
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10] ital(Log[])))#
+)
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10], italic(Log[])))#
+)
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10], italic(N)))#
+)#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  # n in age grp 1#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][2], n.ls[[j]][2])), lty=2 )  # n in age grp 2  #
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][3], n.ls[[j]][3])), lty=3 )  # n in age grp 2  #
+}
+legend("topleft", legend=paste("Age class", 1:3), lty=1:3, bty="o")
+# Projections of age-classified matrix#
+n.ls <- list()#
+n.ls[[1]] <- matrix(c(1, 0.01, 0.01), nrow=3)  # n.0#
+for(j in 2:20) {#
+	n.ls[[j]] <- A %*% n.ls[[j-1]]#
+}#
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10], italic(N)))#
+)#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  # n in age grp 1#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][2], n.ls[[j]][2])), lty=2 )  # n in age grp 2  #
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][3], n.ls[[j]][3])), lty=3 )  # n in age grp 2  #
+}#
+legend("topleft", legend=paste("Age class", 1:3), lty=1:3, bty="n")
+n.ls[[1]] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)  # n.0
+lambda <- Re(eigen(A)$values[1])
+eigen(A)$vectors
+eigen(A)$vectors[1])
+Re(eigen(A)$vectors[1])
+Re(eigen(A)$vectors[,1])
+A
+Conj(A)
+t(Conj(A))
+A.star <- t(Conj(A))
+lambda <- Re(eigen(A)$values[1])#
+w <- Re(eigen(A)$vectors[,1])  # the right eigenvector#
+A.star <- t(Conj(A))#
+v <- Re(eigen(A.star)$vectors[,1])  # the left eigenvector#
+w#
+v
+lambda <- Re(eigen(A)$values[1])#
+w <- Re(eigen(A)$vectors[,1])  # the right eigenvector#
+A.star <- t(Conj(A))#
+v <- Re(eigen(A.star)$vectors[,1])  # the left eigenvector#
+lambda#
+w#
+v
+s <- outer(v, w)  # sens#
+e <- s * A / lambda # elast
+s
+e
+plot.points.with.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.6)#
+}
+plot.points.w.label(4)
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.6)#
+}#
+plot.points.w.label(4)
+#
+# Programming in R#
+Programming.in.R <- function(){} # dummy-function#
+#
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, col="red")#
+}#
+plot.points.w.label(4)
+#
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red")#
+}#
+plot.points.w.label(4)
+?text
+#
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red")#
+	text(x, y, label=x)#
+}#
+plot.points.w.label(4)
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red")#
+	text(x+0.1, y+0.1, label=x)#
+}#
+plot.points.w.label(4)
+#
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red",#
+		xlim=c(1, n+1)#
+	)#
+	text(x+0.1, y+0.1, label=x)#
+}#
+plot.points.w.label(4)
+#
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red",#
+		xlim=c(1, n+1), ylim=c(1, n+1)#
+	)#
+	text(x+0.1, y+0.1, label=x)#
+}#
+plot.points.w.label(4)
+data.frame(x,y)
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red",#
+		xlim=c(1, n+1), ylim=c(1, n+1)#
+	)#
+	text(x+0.1, y+0.1, label=x)#
+	return(data.frame(x,y))#
+}#
+plot.points.w.label(4)
+#
+plot.points.w.label <- function(n=1, plot=TRUE) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red",#
+		xlim=c(1, n+1), ylim=c(1, n+1)#
+	)#
+	text(x+0.1, y+0.1, label=x)#
+	if(!plot) return(data.frame(x,y))#
+}#
+plot.points.w.label(4)
+plot.points.w.label(4, plot=F)
+?for
+?"for"
+point.ls <- list()
+point.ls <- list() # create empty list#
+for(i in 1:10) {#
+	point.ls[[]] <- plot.points.w.label(5, plot=FALSE)#
+}
+point.ls <- list() # create empty list#
+for(i in 1:10) {#
+	point.ls[[i]] <- plot.points.w.label(5, plot=FALSE)#
+}
+point.ls
+point.ls <- list() # create empty list#
+for(i in 1:10) {#
+	point.ls[[i]] <- plot.points.w.label(5, plot=FALSE)#
+}#
+point.ls
+tmp <- 7#
+if(tmp==7) warning("tmp is 7")
+if(tmp==7) stop("tmp is 7")
+tmp <- 7#
+if(tmp==7) warning("tmp is 7")#
+if(tmp==7) stop("tmp is 7")#
+if(tmp==7) break
+?"=="
+library(rgdal)
+getwd()
+dir()
+	deterr.data <- read.table("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/output/Homogeneous/file-noise-debug.txt")
+	deterr.data <- read.table("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/output/Homogeneous/file-noise-debug.txt", header=TRUE)
+	summary(deterr.data)
+	plot(deterr.data$time.step, deterr.data$utm.y)
+	abline(h=706) # location of wind-farms
+	abline(h=706, col="red") # location of wind-farms
+	plot(deterr.data$time.step, deterr.data$utm.y#
+		xlab="time step", ylab="ycor", pch=16, cex=0.6, col="grey"#
+	)#
+	abline(h=706, col="red") # location of wind-farms
+	plot(deterr.data$time.step, deterr.data$utm.y,#
+		xlab="time step", ylab="ycor", pch=16, cex=0.6, col="grey"#
+	)
+	abline(h=706, col="red") # location of wind-farms
+	plot(deterr.data$time.step, deterr.data$utm.y,#
+		xlab="time step", ylab="ycor", pch=16, cex=0.3, col="black"#
+	)#
+	abline(h=706, col="red") # location of wind-farms
+	plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+		xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black"#
+	)
+?signif
+?scipen
+?par
+	options(scipen=3)	# suppress scientific notation#
+	plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+		xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black"#
+	)
+	abline(h=0, col="red") # location of wind-farms
+	deterr.data <- read.table("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/output/Homogeneous/file-noise-debug.txt", header=TRUE)#
+	options(scipen=3)	# suppress scientific notation#
+	plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+		xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black"#
+	)#
+	abline(h=0, col="red") # location of wind-farms
+summary(deterr.data)
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("Deter coeff =", dc, "Deter dist = ", sdd),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black"#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+		}#
+	}
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("Deter coeff = ", dc, ", Deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black"#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+		}#
+	}
+			abline(h=-200, col="red", lty=2) # location of wind-farms		}
+			abline(h=-1000, col="red", lty=2) # location of wind-farms		}
+dat1=c(1,2,3,4,5,6,7,8,9,10)
+ar(dat1)
+?ar
+			abline(h=-200, col="red", lty=3) # location of wind-farms			abline(h=200, col="red", lty=3) # location of wind-farms		}
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms
+ar(dat1)
+AUTO = ar(dat1)
+AUTO
+summary(AUTO)
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black"#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+		}#
+	}
+summary(deterr.data)
+	deterr.data <- read.table("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/output/Homogeneous/file-noise-debug.txt", header=TRUE)#
+#
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black"#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+		}#
+	}
+unique(deterr.data$std.deter.dist)
+unique(deterr.data$id)
+				plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+					main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+					xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+					type="n"#
+				)
+			for (id in unique(deterr.data$id) ) {#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400)#
+			}
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms
+runif(1,0,20)
+trunc(runif(1,0,20))
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(cl)#
+				)#
+			}
+cl
+rainbow(cl)
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+			}
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n"#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+			}#
+		}#
+	}
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n"#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+			}#
+		}#
+	}
+	deterr.data <- read.table("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/output/Homogeneous/file-noise-debug.txt", header=TRUE)#
+#
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n"#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+			}#
+		}#
+	}
+	table(deterr.data$time.step, (deterr.data$utm.y-706)*400)
+	table(deterr.data$time.step, deterr.data$id)
+	table(deterr.data$id, deterr.data$time.step)
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-600, 600)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+			}#
+		}#
+	}
+#
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-800, 800)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+			}#
+		}#
+	}
+#
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-1000, 1000)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+			}#
+		}#
+	}
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-1000, 1000)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					pch=16, cex=0.6#
+				)			#
+			}#
+		}#
+	}
+	deterr.data <- read.table("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/output/Homogeneous/file-noise-debug.txt", header=TRUE)#
+	table(deterr.data$id, deterr.data$time.step)#
+#
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-1200, 1200)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					pch=16, cex=0.6#
+				)			#
+			}#
+		}#
+	}
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-2000, 2000)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					pch=16, cex=0.6#
+				)			#
+			}#
+		}#
+	}
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-3000, 3000)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3) # location of wind-farms#
+			abline(h=200, col="red", lty=3) # location of wind-farms#
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					pch=16, cex=0.3#
+				)			#
+			}#
+		}#
+	}
+			abline(h=-sdd, col="red", lty=2) #
+			abline(h=sdd, col="red", lty=2)
+file = "file-noise-debug 110308.txt"
+	deterr.data <- read.table(paste("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/output/Homogeneous/", file, sep=""), header=TRUE)#
+	table(deterr.data$id, deterr.data$time.step)
+debug.noise <- function(file = "file-noise-debug.txt"){#
+	deterr.data <- read.table(paste("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/output/Homogeneous/", file, sep=""), header=TRUE)#
+	# table(deterr.data$id, deterr.data$time.step)#
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-3000, 3000)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3)#
+			abline(h=200, col="red", lty=3) #
+			abline(h=-sdd, col="red", lty=2) #
+			abline(h=sdd, col="red", lty=2) #
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					pch=16, cex=0.3#
+				)			#
+			}#
+		}#
+	}#
+}
+par(mfrow=c(4,4))
+debug.noise("file-noise-debug 110308.txt")
+sort(unique(deterr.data$deterr.coef))
+	dc=1
+sort(unique(deterr.data$std.deter.dist))
+	dc <- 1; sdd <- 400
+sort(unique(deterr.data$deterr.coef))
+	dc.lgt <- lenth(sort(unique(deterr.data$deterr.coef)))
+dc.lgt
+	dc.lgt <- length(sort(unique(deterr.data$deterr.coef)))
+dc.lgt
+	sdd.lgt <- length(unique(deterr.data$std.deter.dist))
+sdd.lgt
+dc <- 1; sdd <- 400
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-3000, 3000)#
+			)
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3)#
+			abline(h=200, col="red", lty=3) #
+			abline(h=-sdd, col="red", lty=2) #
+			abline(h=sdd, col="red", lty=2)
+			for (id in unique(deterr.data$id) ) {#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					pch=16, cex=0.3#
+				)			#
+			}
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-3000, 3000)#
+			)
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3)#
+			abline(h=200, col="red", lty=3) #
+			abline(h=-sdd, col="red", lty=2) #
+			abline(h=sdd, col="red", lty=2)
+unique(deterr.data$id)
+unique(deterr.data$id)[1]
+				id <- unique(deterr.data$id)[1]#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					pch=16, cex=0.3#
+				)
+				use.data <- deterr.data$id == id & deterr.data$std.deter.dist == sdd & deterr.data$deterr.coef == dc
+use.data
+sum(use.data)
+id <- unique(deterr.data$id)[1]
+dc <- 1; sdd <- 400
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-3000, 3000)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3)#
+			abline(h=200, col="red", lty=3) #
+			abline(h=-sdd, col="red", lty=2) #
+			abline(h=sdd, col="red", lty=2)
+				# id <- unique(deterr.data$id)[1]#
+				use.data <- deterr.data$id == id & deterr.data$std.deter.dist == sdd & deterr.data$deterr.coef == dc#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[use.data], (deterr.data$utm.y-706)[use.data]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[deterr.data$id == id], (deterr.data$utm.y-706)[deterr.data$id == id]*400,#
+					pch=16, cex=0.3#
+				)
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-3000, 3000)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3)#
+			abline(h=200, col="red", lty=3) #
+			abline(h=-sdd, col="red", lty=2) #
+			abline(h=sdd, col="red", lty=2) #
+			for (id in unique(deterr.data$id) ) {#
+				# id <- unique(deterr.data$id)[1]#
+				use.data <- deterr.data$id == id & deterr.data$std.deter.dist == sdd & deterr.data$deterr.coef == dc#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[use.data], (deterr.data$utm.y-706)[use.data]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[use.data], (deterr.data$utm.y-706)[use.data]*400,#
+					pch=16, cex=0.3#
+				)			#
+			}
+#
+debug.noise <- function(file = "file-noise-debug.txt"){#
+	deterr.data <- read.table(paste("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/output/Homogeneous/", file, sep=""), header=TRUE)#
+	# table(deterr.data$id, deterr.data$time.step)#
+	dc.lgt <- length(unique(deterr.data$deterr.coef))#
+	sdd.lgt <- length(unique(deterr.data$std.deter.dist))#
+	# dc <- 1; sdd <- 400#
+	for (dc in sort(unique(deterr.data$deterr.coef))) {#
+		for (sdd in sort(unique(deterr.data$std.deter.dist))) {#
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-3000, 3000)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3)#
+			abline(h=200, col="red", lty=3) #
+			abline(h=-sdd, col="red", lty=2) #
+			abline(h=sdd, col="red", lty=2) #
+			for (id in unique(deterr.data$id) ) {#
+				# id <- unique(deterr.data$id)[1]#
+				use.data <- deterr.data$id == id & deterr.data$std.deter.dist == sdd & deterr.data$deterr.coef == dc#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[use.data], (deterr.data$utm.y-706)[use.data]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[use.data], (deterr.data$utm.y-706)[use.data]*400,#
+					pch=16, cex=0.3#
+				)			#
+			}#
+		}#
+	}#
+}
+par(mfrow=c(4,4))
+par(mfrow=c(4,4))
+#file = "file-noise-debug 110308.txt"#
+debug.noise("file-noise-debug 110308.txt")
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-3000, 3000)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3)#
+			abline(h=200, col="red", lty=3) #
+			abline(h=-sdd, col="red", lty=2) #
+			abline(h=sdd, col="red", lty=2) #
+			for (id in unique(deterr.data$id) ) {#
+				# id <- unique(deterr.data$id)[1]#
+				use.data <- deterr.data$id == id & deterr.data$std.deter.dist == sdd & deterr.data$deterr.coef == dc#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[use.data], (deterr.data$utm.y-706)[use.data]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[use.data], (deterr.data$utm.y-706)[use.data]*400,#
+					pch=16, cex=0.3#
+				)			#
+			}
+length(unique(deterr.data$std.deter.dist))
+unique(deterr.data$std.deter.dist)
+ dc <- 1; sdd <- 1800
+			options(scipen=3)	# suppress scientific notation#
+			plot(deterr.data$time.step, (deterr.data$utm.y-706)*400,#
+				main=paste("deter coeff = ", dc, ", deter dist = ", sdd, sep=""),#
+				xlab="time step", ylab="distance to wind farm [m]", pch=16, cex=0.3, col="black",#
+				type="n", ylim=c(-3000, 3000)#
+			)#
+			abline(h=0, col="red") # location of wind-farms#
+			abline(h=-200, col="red", lty=3)#
+			abline(h=200, col="red", lty=3) #
+			abline(h=-sdd, col="red", lty=2) #
+			abline(h=sdd, col="red", lty=2) #
+			for (id in unique(deterr.data$id) ) {#
+				# id <- unique(deterr.data$id)[1]#
+				use.data <- deterr.data$id == id & deterr.data$std.deter.dist == sdd & deterr.data$deterr.coef == dc#
+				cl <- trunc(runif(1,0,20))#
+				lines(deterr.data$time.step[use.data], (deterr.data$utm.y-706)[use.data]*400,#
+					col=rainbow(20)[cl]#
+				)#
+				points(deterr.data$time.step[use.data], (deterr.data$utm.y-706)[use.data]*400,#
+					pch=16, cex=0.3#
+				)			#
+			}#
+		}

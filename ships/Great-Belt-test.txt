@@ -1,0 +1,2 @@
+id	speed	impactna1	2	4
+na2	4	6

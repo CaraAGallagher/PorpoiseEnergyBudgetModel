@@ -1,0 +1,370 @@
+library(trk)
+load("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise mov model/Model output/New calib of rR and rW/1 cell patches/Res t vs rR rW and rU, 1 cell per patch.RData")
+load("/Users/jacob/Desktop/Res t vs rR rW and rU, 1 cell per patch.RData")
+#
+# Find out if input values are correct (no NAs):#
+summary(all.res.times$Umax)#
+summary(as.factor(all.res.times$rW))#
+summary(as.factor(all.res.times$rR))#
+summary(as.factor(all.res.times$rU))#
+tapply(all.res.times$mean.res.t, INDEX=list(all.res.times$rW, all.res.times$rR, all.res.times$rU), FUN="length")
+#
+all.res.times <- all.res.times[all.res.times$rW<0.65 ,]#
+tapply(all.res.times$mean.res.t, INDEX=list(all.res.times$rW, all.res.times$rR, all.res.times$rU), FUN="mean")
+load("/Volumes/nabenielsen/Documents/Tropical ecology/African Animals project/Animals/All_anim_data_frame 2011-10-13.RData")
+all.months <- substr(all.anim.data.frame$pos.date, 1, 7)#
+anim.monthly.mean <- tapply(all.anim.data.frame$dist.to.prev.patch, INDEX=list(all.anim.data.frame$being.entered, all.anim.data.frame$sp, all.months), FUN="mean")
+anim.monthly.mean
+as.data.frame(anim.monthly.mean)
+dim(as.data.frame(anim.monthly.mean))
+names(as.data.frame(anim.monthly.mean))
+anim.monthly.mean <- tapply(all.anim.data.frame$dist.to.prev.patch, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="mean")#
+as.data.frame(anim.monthly.mean)
+anim.monthly.mean <- as.data.frame(anim.monthly.mean)
+plot(anim.monthly.mean[,1])
+plot(anim.monthly.mean[,1], axes=FALSE)
+axis(2)
+plot(anim.monthly.mean[,1], axes=FALSE, xlab="Month", ylab="Distance from patch left")
+axis(2)
+anim.monthly.mean[,1]
+row.names(anim.monthly.mean)
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))
+anim.monthly.mean
+plot(1:25, 1:25, pch=1:25)
+plot(anim.monthly.mean[,1], axes=FALSE, xlab="Month", ylab="Distance from patch left", pch=23)#
+points(anim.monthly.mean[,2], pch=18)#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))#
+axis(2)
+points(anim.monthly.mean[,2], pch=18)
+points(anim.monthly.mean[,2], pch=19)
+anim.monthly.mean[,2]
+anim.monthly.mean[,1]
+length(anim.monthly.mean[,1])
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=19)
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=19)
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], axes=FALSE, xlab="Month", ylab="Distance from patch left", pch=23)
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))
+axis(2)
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean[,1])),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=19)#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))#
+axis(2)
+max(anim.monthly.mean[,1])
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean[,1], na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left", pch=23#
+)
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=19)#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))#
+axis(2)
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean[,1], na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))#
+axis(2)
+anim.monthly.mean
+plot(1:25, 1:25, pch=1:25)
+all.anim.data.frame <- data.frame()#
+for (i in 1:length(all.anim.data)) {#
+	nm <- gsub(".csv", "", anim.files[i])#
+	sp <- ifelse(length(grep("ZE", nm)==1), "Zebra", "Hartebeest")#
+	tmp <- cbind(all.anim.data[[i]], "nm"=(nm), "sp"=(sp))#
+	all.anim.data.frame <<- rbind(all.anim.data.frame, tmp)#
+}#
+save(all.anim.data.frame, anim.files, file=paste("All_anim_data_frame_", Sys.Date(), ".RData"))
+load("/Volumes/nabenielsen/Documents/Tropical ecology/African Animals project/Animals/All_anim_data 2011-10-13.RData")
+all.anim.data.frame <- data.frame()#
+for (i in 1:length(all.anim.data)) {#
+	nm <- gsub(".csv", "", anim.files[i])#
+	sp <- ifelse(length(grep("ZE", nm)==1), "Zebra", "Hartebeest")#
+	tmp <- cbind(all.anim.data[[i]], "nm"=(nm), "sp"=(sp))#
+	all.anim.data.frame <<- rbind(all.anim.data.frame, tmp)#
+}#
+save(all.anim.data.frame, anim.files, file=paste("All_anim_data_frame_", Sys.Date(), ".RData"))
+#
+# Make a similar plot based on all the data (but with month on x-axis)#
+all.months <- substr(all.anim.data.frame$pos.date, 1, 7)#
+anim.monthly.mean <- tapply(all.anim.data.frame$dist.to.prev.patch, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="mean")#
+anim.monthly.mean <- as.data.frame(anim.monthly.mean)#
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean[,1], na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16)#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, used patches", "Hartebeest, unused patches", "Hartebeest, used patches"), pch=c(23, 18,1,16))
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16)#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))#
+axis(2)#
+legend("bottomright", c("Zebra, entered patches", "Zebra, entered patches", "Hartebeest, entered patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), bty="n")
+all.anim.data.frame
+anim.monthly.mean
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey", "grey"), bty="n")
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey30")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey30")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey30", "grey30"), bty="n")
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=row.names(anim.monthly.mean))#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+row.names(anim.monthly.mean)
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=substr(row.names(anim.monthly.mean),6,7))
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left [m]", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=substr(row.names(anim.monthly.mean),6,7))#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left [m]", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)))#
+axis(2)
+rep("", length(row.names(anim.monthly.mean))
+)
+axis
+?axis
+axis(1, at=c(4, 16, 28), labels=rep("", 3), lwd.ticks=3)
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left [m]", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=rep("", length(row.names(anim.monthly.mean))))#
+axis(1, at=c(4, 16, 28), labels=rep("", 3), lwd.ticks=3)#
+axis(1, at=c(10, 22), labels=c("2009", "2010"))#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+2011
+axis(1, at=c(10, 22, 32), labels=c("2009", "2010", "2011"))
+axis(1, at=c(10, 22, 34), labels=c("2009", "2010", "2011"), lwd.ticks=0)
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left [m]", pch=23#
+)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=rep("", length(row.names(anim.monthly.mean))))#
+axis(1, at=c(4, 16, 28), labels=rep("", 3), lwd.ticks=3)#
+axis(1, at=c(10, 22, 34), labels=c("2009", "2010", "2011"), lwd.ticks=0)#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+anim.monthly.sd <- tapply(all.anim.data.frame$dist.to.prev.patch, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="sd")
+anim.monthly.sd <- as.data.frame(anim.monthly.mean)
+arrows(x0=1:length(anim.monthly.mean[,1]), y0=anim.monthly.mean[,1]-anim.monthly.sd[,1], y1=anim.monthly.mean[,1]+anim.monthly.sd[,1], angle=90, code=3)
+anim.monthly.sd
+anim.monthly.sd <- tapply(all.anim.data.frame$dist.to.prev.patch, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="se")
+anim.monthly.mean <- tapply(all.anim.data.frame$dist.to.prev.patch, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="mean")#
+anim.monthly.mean <- as.data.frame(anim.monthly.mean)#
+anim.monthly.sd <- tapply(all.anim.data.frame$dist.to.prev.patch, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="sd")#
+anim.monthly.sd <- as.data.frame(anim.monthly.sd)#
+# anim.monthly.count <- tapply(all.anim.data.frame$dist.to.prev.patch, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="sd")#
+# anim.monthly.count <- as.data.frame(anim.monthly.mean)#
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left [m]", pch=23#
+)#
+arrows(x0=1:length(anim.monthly.mean[,1]), y0=anim.monthly.mean[,1]-anim.monthly.sd[,1], y1=anim.monthly.mean[,1]+anim.monthly.sd[,1], angle=90, code=3)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=rep("", length(row.names(anim.monthly.mean))))#
+axis(1, at=c(4, 16, 28), labels=rep("", 3), lwd.ticks=3)#
+axis(1, at=c(10, 22, 34), labels=c("2009", "2010", "2011"), lwd.ticks=0)#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+# Make a similar plot based on all the data (but with month on x-axis)#
+all.months <- substr(all.anim.data.frame$pos.date, 1, 7)#
+anim.monthly.mean <- tapply(all.anim.data.frame$dist.to.prev.patch, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="mean")#
+anim.monthly.mean <- as.data.frame(anim.monthly.mean)#
+anim.monthly.sd <- tapply(all.anim.data.frame$dist.to.prev.patch, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="sd")#
+anim.monthly.sd <- as.data.frame(anim.monthly.sd)#
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance from patch left [m]", pch=23#
+)#
+# arrows(x0=1:length(anim.monthly.mean[,1]), y0=anim.monthly.mean[,1]-anim.monthly.sd[,1], y1=anim.monthly.mean[,1]+anim.monthly.sd[,1], angle=90, code=3)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=rep("", length(row.names(anim.monthly.mean))))#
+axis(1, at=c(4, 16, 28), labels=rep("", 3), lwd.ticks=3)#
+axis(1, at=c(10, 22, 34), labels=c("2009", "2010", "2011"), lwd.ticks=0)#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+summary(all.anim.data.frame)
+#
+# Days since burn#
+all.months <- substr(all.anim.data.frame$pos.date, 1, 7)#
+anim.monthly.mean <- tapply(all.anim.data.frame$days.since.burn, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="mean")#
+anim.monthly.mean <- as.data.frame(anim.monthly.mean)#
+anim.monthly.sd <- tapply(all.anim.data.frame$days.since.burn, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="sd")#
+anim.monthly.sd <- as.data.frame(anim.monthly.sd)#
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Time since burning [days]", pch=23#
+)#
+# arrows(x0=1:length(anim.monthly.mean[,1]), y0=anim.monthly.mean[,1]-anim.monthly.sd[,1], y1=anim.monthly.mean[,1]+anim.monthly.sd[,1], angle=90, code=3)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=rep("", length(row.names(anim.monthly.mean))))#
+axis(1, at=c(4, 16, 28), labels=rep("", 3), lwd.ticks=3)#
+axis(1, at=c(10, 22, 34), labels=c("2009", "2010", "2011"), lwd.ticks=0)#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+#
+# Days since burn#
+all.months <- substr(all.anim.data.frame$pos.date, 1, 7)#
+anim.monthly.mean <- tapply(all.anim.data.frame$days.since.burn, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="mean")#
+anim.monthly.mean <- as.data.frame(anim.monthly.mean)#
+anim.monthly.sd <- tapply(all.anim.data.frame$days.since.burn, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="sd")#
+anim.monthly.sd <- as.data.frame(anim.monthly.sd)#
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Time since burned [days]", pch=23#
+)#
+# arrows(x0=1:length(anim.monthly.mean[,1]), y0=anim.monthly.mean[,1]-anim.monthly.sd[,1], y1=anim.monthly.mean[,1]+anim.monthly.sd[,1], angle=90, code=3)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=rep("", length(row.names(anim.monthly.mean))))#
+axis(1, at=c(4, 16, 28), labels=rep("", 3), lwd.ticks=3)#
+axis(1, at=c(10, 22, 34), labels=c("2009", "2010", "2011"), lwd.ticks=0)#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+summary(all.anim.data.frame)
+# Patch size#
+all.months <- substr(all.anim.data.frame$pos.date, 1, 7)#
+anim.monthly.mean <- tapply(all.anim.data.frame$patch.size, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="mean")#
+anim.monthly.mean <- as.data.frame(anim.monthly.mean)#
+anim.monthly.sd <- tapply(all.anim.data.frame$patch.size, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="sd")#
+anim.monthly.sd <- as.data.frame(anim.monthly.sd)#
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Patch size [ha]", pch=23#
+)#
+# arrows(x0=1:length(anim.monthly.mean[,1]), y0=anim.monthly.mean[,1]-anim.monthly.sd[,1], y1=anim.monthly.mean[,1]+anim.monthly.sd[,1], angle=90, code=3)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=rep("", length(row.names(anim.monthly.mean))))#
+axis(1, at=c(4, 16, 28), labels=rep("", 3), lwd.ticks=3)#
+axis(1, at=c(10, 22, 34), labels=c("2009", "2010", "2011"), lwd.ticks=0)#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+summary(all.anim.data.frame)
+#
+# Distance to major river#
+all.months <- substr(all.anim.data.frame$pos.date, 1, 7)#
+anim.monthly.mean <- tapply(all.anim.data.frame$dist.to.river, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="mean")#
+anim.monthly.mean <- as.data.frame(anim.monthly.mean)#
+anim.monthly.sd <- tapply(all.anim.data.frame$dist.to.river, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="sd")#
+anim.monthly.sd <- as.data.frame(anim.monthly.sd)#
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Patch size [ha]", pch=23#
+)#
+# arrows(x0=1:length(anim.monthly.mean[,1]), y0=anim.monthly.mean[,1]-anim.monthly.sd[,1], y1=anim.monthly.mean[,1]+anim.monthly.sd[,1], angle=90, code=3)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=rep("", length(row.names(anim.monthly.mean))))#
+axis(1, at=c(4, 16, 28), labels=rep("", 3), lwd.ticks=3)#
+axis(1, at=c(10, 22, 34), labels=c("2009", "2010", "2011"), lwd.ticks=0)#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+#
+# Distance to major river#
+all.months <- substr(all.anim.data.frame$pos.date, 1, 7)#
+anim.monthly.mean <- tapply(all.anim.data.frame$dist.to.river, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="mean")#
+anim.monthly.mean <- as.data.frame(anim.monthly.mean)#
+anim.monthly.sd <- tapply(all.anim.data.frame$dist.to.river, INDEX=list(all.months, all.anim.data.frame$being.entered, all.anim.data.frame$sp), FUN="sd")#
+anim.monthly.sd <- as.data.frame(anim.monthly.sd)#
+plot(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,1], #
+	ylim=c(0, max(anim.monthly.mean, na.rm=TRUE)),#
+	axes=FALSE, xlab="Month", ylab="Distance to major river [m]", pch=23#
+)#
+# arrows(x0=1:length(anim.monthly.mean[,1]), y0=anim.monthly.mean[,1]-anim.monthly.sd[,1], y1=anim.monthly.mean[,1]+anim.monthly.sd[,1], angle=90, code=3)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,2], pch=18)#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,3], pch=1, col="grey50")#
+points(1:length(anim.monthly.mean[,1]), anim.monthly.mean[,4], pch=16, col="grey50")#
+axis(1, at=1:length(row.names(anim.monthly.mean)), labels=rep("", length(row.names(anim.monthly.mean))))#
+axis(1, at=c(4, 16, 28), labels=rep("", 3), lwd.ticks=3)#
+axis(1, at=c(10, 22, 34), labels=c("2009", "2010", "2011"), lwd.ticks=0)#
+axis(2)#
+legend("bottomright", c("Zebra, unused patches", "Zebra, entered patches", "Hartebeest, unused patches", "Hartebeest, entered patches"), pch=c(23, 18,1,16), col=c("black", "black", "grey50", "grey50"), bty="n")
+summary(all.anim.data.frame)
+model.2a <- aov(dist.to.prev.patch ~ as.factor(being.entered) * sp + pos.date + nm, data=all.anim.data.frame)#
+summary(model.2a)
+library(rgdal)
+In R run: install.packages('rgdal',repos="http://www.stats.ox.ac.uk/pub/RWin")
+install.packages('rgdal',repos="http://www.stats.ox.ac.uk/pub/RWin")
+library(rgdal)
+#
+library(sp)#
+require(rgdal)#
+#
+# Load shapefiles#
+try(setwd("/Volumes/nabenielsen/Documents/GIS/Marsvinemodellering"), silent=TRUE)#
+try(setwd("/Volumes/nabenielsen/Documents/GIS/Denmark layers"), silent=TRUE)#
+kattegat <- readOGR("Kattegat_Land.shp", "Kattegat_Land")#
+broer <- readOGR("UdvalgteBroer.shp", "UdvalgteBroer")#
+byer <- readOGR("UdvalgteByer.shp", "UdvalgteByer")#
+#
+# Load raster food patches#
+library(trk)#
+try(setwd("/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/raster-data/Kattegat"), silent=TRUE)#
+patches <- read.raster("patches.asc", id="13 cell food patches")
+ls()
+summary(patches)
+312419 +283009   +4572
+240/0.4 * 400/0.4
+4572 / 6e+05

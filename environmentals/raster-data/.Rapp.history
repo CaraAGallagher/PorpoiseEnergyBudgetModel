@@ -1,0 +1,712 @@
+library(lattice)
+library(sp)
+?trk
+# Plot on top of Esri shapefiles imported into \code{sp} objects:#
+data(porpoisetrack)#
+data(denmark)#
+plot(denmark, add=FALSE, col=grey(0.97), axes=TRUE)#
+sp.porp <- as.SpatialPointsDataFrame(porpoisetrack)#
+plot(sp.porp , add=TRUE, col="red")#
+#
+# Make cropped plot:#
+dev.new()#
+plot(sp.porp , add=FALSE, col="red")#
+plot(denmark, add=TRUE, col=grey(0.97), axes=TRUE)#
+plot(sp.porp , add=TRUE, col="red")#
+axis(1); axis(2)#
+mtext("UTM coordinates", side=1, cex=0.8, line=2.5)
+# Plot on top of Esri shapefiles imported into \code{sp} objects:#
+data(porpoisetrack)#
+data(denmark)#
+plot(denmark, add=FALSE, col=grey(0.97), axes=TRUE)#
+sp.porp <- as.SpatialPointsDataFrame(porpoisetrack)#
+plot(sp.porp , add=TRUE, col="red")
+## Trim a map and add positions#
+dev.new()#
+library(lattice)#
+require(trk)#
+data(porpoisetrack)#
+data(denmark)#
+land <- list("sp.polygons", denmark, fill = "lightgrey")#
+trellis.par.set(c("red","blue","yellow","green","black")) # sets color ramp to bpy.colors()#
+scale = list("SpatialPolygonsRescale", layout.scale.bar(), #
+	offset = c(180500,329800), scale = 500, fill=c("transparent","black"), which = 1)#
+text1 = list("sp.text", c(180500,329900), "0", which = 1)#
+text2 = list("sp.text", c(181000,329900), "500 m", which = 1)#
+arrow = list("SpatialPolygonsRescale", layout.north.arrow(), #
+	offset = c(178750,332500), scale = 400)#
+ptr <- as.SpatialPointsDataFrame(porpoisetrack)#
+spplot(ptr["lc94"], do.log = FALSE,#
+	key.space = "bottom", #
+	sp.layout = list(land, scale, text1, text2),#
+	main = "Kattegat"#
+	# legend = list(right = list(fun = mapLegendGrob(layout.north.arrow())))#
+)
+# A simple example:#
+data(porpoisetrack)#
+pt <- porpoisetrack#
+id(pt) <- "Track for porpoise pttid 2000-04542"#
+plot(pt, type="n", cex.axis=0.7, sub="Elapsed time in hours", new.plot=TRUE)#
+points(pt, pch=5, col="darkgreen")#
+lines(pt, lwd=0.5, col="red")
+# Add a label to the points:#
+time <- as.POSIXct(paste(pt@data$year, "-", pt@data$month, "-", pt@data$day, " ", pt@data$hour, ":", pt@data$minute, ":", pt@data$second, sep=""))#
+time.hrs <- (unclass(time) - min(unclass(time))) / (60 * 60) # Elapsed time in hours#
+time.days <- round(time.hrs/24, 1)#
+text(pt@coords+c(12000, 3000), as.character(round(time.days, 2)), cex=0.6, col="red")
+# Plotting of lines on top of raster files (points with ARGOS colours):#
+data(greatbelt)#
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+	col.line = "black", #
+	lwd = 0.2,#
+	pch = 9,#
+	main = "Test plot", #
+	sub = "Plot of porpoisetrack with custom colours. Both track and raster with UTM coords."#
+)#
+# Colour code: DP = "black", G = "blue", A = "red", B = "darkred", #
+# "0" = "orange", "1" = "yellow", "2" = "green", "3" = "darkgreen"
+#
+library(trk)#
+# Plotting of lines on top of raster files (points with ARGOS colours):#
+data(greatbelt)#
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+#	col.line = "black", #
+#	lwd = 0.2,#
+#	pch = 9,#
+	main = "Test plot", #
+	sub = "Plot of porpoisetrack with custom colours. Both track and raster with UTM coords."#
+)#
+# Colour code: DP = "black", G = "blue", A = "red", B = "darkred", #
+# "0" = "orange", "1" = "yellow", "2" = "green", "3" = "darkgreen"
+library(trk)#
+# Plotting of lines on top of raster files (points with ARGOS colours):#
+data(greatbelt)#
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+	col.line = "black", #
+#	lwd = 0.2,#
+#	pch = 9,#
+	main = "Test plot", #
+#	sub = "Plot of porpoisetrack with custom colours. Both track and raster with UTM coords."#
+)#
+# Colour code: DP = "black", G = "blue", A = "red", B = "darkred", #
+# "0" = "orange", "1" = "yellow", "2" = "green", "3" = "darkgreen"
+#
+library(trk)#
+# Plotting of lines on top of raster files (points with ARGOS colours):#
+data(greatbelt)#
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+	col.line = "black", #
+#	lwd = 0.2,#
+#	pch = 9,#
+	main = "Test plot" #
+#	sub = "Plot of porpoisetrack with custom colours. Both track and raster with UTM coords."#
+)#
+# Colour code: DP = "black", G = "blue", A = "red", B = "darkred", #
+# "0" = "orange", "1" = "yellow", "2" = "green", "3" = "darkgreen"
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+	col.line = "black"#
+)
+moves(porpoisetrack)
+dev.new(width=12, height=6)#
+par(mfrow=c(1,2))#
+data(greatbelt)#
+data(porpoisetrack)#
+plot(greatbelt, porpoisetrack, #
+	lc.select = c("DP", "1", "2", "3", "A"),#
+	col = topo.colors(400)[120:1],#
+	show.levels = FALSE,  # Don't plot the colour key#
+	col.symbol = "ARGOS", #
+	col.line = "black"#
+)#
+#
+moves(porpoisetrack)#
+plot(sp.porp , add=FALSE, col="red")#
+plot(denmark, add=TRUE, col=grey(0.97), axes=TRUE)
+points(sp.porp , add=FALSE, col="grey")
+A <- matrix(c(0,1,4,.7,0,0,0,.5,0), byrow=TRUE, ncol=3)#
+rownames(A) <- paste("r",1:2,sep="")#
+colnames(A) <- paste("c",1:2,sep="")#
+A#
+t(A)
+rownames(A) <- paste("r",1:3,sep="")#
+colnames(A) <- paste("c",1:3,sep="")
+A
+t(A)
+eigen(A) 			     # calculate eigenvalues and eigen vectors#
+Re(eigen(A)$values[1])  # real part of first eigenvalue#
+A %*% A  				 # matrix multiplication#
+A * A 		         # element-wise multiplication
+A
+n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.0
+n.1 <- A %*% n.0
+n.1
+3.5 %% 1
+mpow <- function(matr, pow) {#
+	if(!is.matrix(matr)) stop("The first element must be a matrix")#
+	if(dim(matr)[1]!=dim(matr)[2]) stop("Input matrix must be square")#
+	if(pow %% 1 !=0) stop("pow must be an integer")#
+	if(pow<=0) return(NA)	#
+	if(pow==1) return(matr)	#
+	for (i in 1:pow) {#
+		matr <- matr %*% matr#
+	}#
+	return(matr)#
+}
+n.1 <- A %*% n.0#
+n.2 <- A %*% n.1#
+n.3 <- A %*% n.2#
+n.4 <- A %*% n.3#
+n.5 <- A %*% n.4#
+n.6 <- A %*% n.5#
+n.7 <- A %*% n.6#
+n.8 <- A %*% n.7#
+n.9 <- A %*% n.8#
+n.10 <- A %*% n.9#
+n.11 <- A %*% n.10
+n.11
+list()
+n.ls <- list()
+n.ls
+?list
+n.ls[] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.ls
+n.0
+class(n.0)
+n.ls[[]] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.ls[] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.ls
+n.ls[1] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.ls[[1]] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.ls
+n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)
+n.0
+j
+j<-2
+n.ls[[1]] <- matrix(c(1, 0.01, 0.01), nrow=3)  # n.0
+n.ls
+	n.ls[[j]] <- A %*% n.ls[[j-1]]
+n.ls
+n.ls <- list()#
+n.ls[[1]] <- matrix(c(1, 0.01, 0.01), nrow=3)  # n.0#
+for(j in 2:20) {#
+	n.ls[[j]] <- A %*% n.ls[[j-1]]#
+}
+n.ls[[1]][1]
+c(n.ls[[j]][1], n.ls[[j-1]][1])
+plot(1:20, 1:20, type="n")#
+for(j in 2:20) {#
+	lines(c(j-1, j), c(n.ls[[j-1]][1], n.ls[[j]][1]))  #
+}
+plot(1:20, log10(1:20), type="n")#
+for(j in 2:20) {#
+	lines(c(j-1, j), c(n.ls[[j-1]][1], n.ls[[j]][1]))  #
+}
+plot(1:20, log10(1:20), ylim=c(0,3), type="n")#
+for(j in 2:20) {#
+	lines(c(j-1, j), c(n.ls[[j-1]][1], n.ls[[j]][1]))  #
+}
+plot(1:20, log10(1:20), ylim=c(0,6), type="n")#
+for(j in 2:20) {#
+	lines(c(j-1, j), c(n.ls[[j-1]][1], n.ls[[j]][1]))  #
+}
+plot(1:20, log10(1:20), ylim=c(0,6), type="n")#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  #
+}
+plot(1:20, log10(1:20), ylim=c(-1,3), type="n")#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  #
+}
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n")#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  # n in age grp 1#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][2], n.ls[[j]][2])), lty=2 )  # n in age grp 2  #
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][3], n.ls[[j]][3])), lty=3 )  # n in age grp 2  #
+}
+	xlab="Time", ylab=expression(paste(Log[10],"N"))
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10],"N"))#
+)#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  # n in age grp 1#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][2], n.ls[[j]][2])), lty=2 )  # n in age grp 2  #
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][3], n.ls[[j]][3])), lty=3 )  # n in age grp 2  #
+}
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10],ital(Log[])))#
+)
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10] ital(Log[])))#
+)
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10], italic(Log[])))#
+)
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10], italic(N)))#
+)#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  # n in age grp 1#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][2], n.ls[[j]][2])), lty=2 )  # n in age grp 2  #
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][3], n.ls[[j]][3])), lty=3 )  # n in age grp 2  #
+}
+legend("topleft", legend=paste("Age class", 1:3), lty=1:3, bty="o")
+# Projections of age-classified matrix#
+n.ls <- list()#
+n.ls[[1]] <- matrix(c(1, 0.01, 0.01), nrow=3)  # n.0#
+for(j in 2:20) {#
+	n.ls[[j]] <- A %*% n.ls[[j-1]]#
+}#
+plot(1:20, log10(1:20), ylim=c(-2,2), type="n",#
+	xlab="Time", ylab=expression(paste(Log[10], italic(N)))#
+)#
+for(j in 2:20) {#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][1], n.ls[[j]][1])) )  # n in age grp 1#
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][2], n.ls[[j]][2])), lty=2 )  # n in age grp 2  #
+	lines( c(j-1, j), log10(c(n.ls[[j-1]][3], n.ls[[j]][3])), lty=3 )  # n in age grp 2  #
+}#
+legend("topleft", legend=paste("Age class", 1:3), lty=1:3, bty="n")
+n.ls[[1]] <- n.0 <- matrix(c(1, 0.01, 0.01), nrow=3)  # n.0
+lambda <- Re(eigen(A)$values[1])
+eigen(A)$vectors
+eigen(A)$vectors[1])
+Re(eigen(A)$vectors[1])
+Re(eigen(A)$vectors[,1])
+A
+Conj(A)
+t(Conj(A))
+A.star <- t(Conj(A))
+lambda <- Re(eigen(A)$values[1])#
+w <- Re(eigen(A)$vectors[,1])  # the right eigenvector#
+A.star <- t(Conj(A))#
+v <- Re(eigen(A.star)$vectors[,1])  # the left eigenvector#
+w#
+v
+lambda <- Re(eigen(A)$values[1])#
+w <- Re(eigen(A)$vectors[,1])  # the right eigenvector#
+A.star <- t(Conj(A))#
+v <- Re(eigen(A.star)$vectors[,1])  # the left eigenvector#
+lambda#
+w#
+v
+s <- outer(v, w)  # sens#
+e <- s * A / lambda # elast
+s
+e
+plot.points.with.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.6)#
+}
+plot.points.w.label(4)
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.6)#
+}#
+plot.points.w.label(4)
+#
+# Programming in R#
+Programming.in.R <- function(){} # dummy-function#
+#
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, col="red")#
+}#
+plot.points.w.label(4)
+#
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red")#
+}#
+plot.points.w.label(4)
+?text
+#
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red")#
+	text(x, y, label=x)#
+}#
+plot.points.w.label(4)
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red")#
+	text(x+0.1, y+0.1, label=x)#
+}#
+plot.points.w.label(4)
+#
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red",#
+		xlim=c(1, n+1)#
+	)#
+	text(x+0.1, y+0.1, label=x)#
+}#
+plot.points.w.label(4)
+#
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red",#
+		xlim=c(1, n+1), ylim=c(1, n+1)#
+	)#
+	text(x+0.1, y+0.1, label=x)#
+}#
+plot.points.w.label(4)
+data.frame(x,y)
+plot.points.w.label <- function(n=1) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red",#
+		xlim=c(1, n+1), ylim=c(1, n+1)#
+	)#
+	text(x+0.1, y+0.1, label=x)#
+	return(data.frame(x,y))#
+}#
+plot.points.w.label(4)
+#
+plot.points.w.label <- function(n=1, plot=TRUE) {#
+	x <- 1:n#
+	y <- rnorm(n) + x#
+	plot(x, y, cex=0.8, pch=17, col="red",#
+		xlim=c(1, n+1), ylim=c(1, n+1)#
+	)#
+	text(x+0.1, y+0.1, label=x)#
+	if(!plot) return(data.frame(x,y))#
+}#
+plot.points.w.label(4)
+plot.points.w.label(4, plot=F)
+?for
+?"for"
+point.ls <- list()
+point.ls <- list() # create empty list#
+for(i in 1:10) {#
+	point.ls[[]] <- plot.points.w.label(5, plot=FALSE)#
+}
+point.ls <- list() # create empty list#
+for(i in 1:10) {#
+	point.ls[[i]] <- plot.points.w.label(5, plot=FALSE)#
+}
+point.ls
+point.ls <- list() # create empty list#
+for(i in 1:10) {#
+	point.ls[[i]] <- plot.points.w.label(5, plot=FALSE)#
+}#
+point.ls
+tmp <- 7#
+if(tmp==7) warning("tmp is 7")
+if(tmp==7) stop("tmp is 7")
+tmp <- 7#
+if(tmp==7) warning("tmp is 7")#
+if(tmp==7) stop("tmp is 7")#
+if(tmp==7) break
+?"=="
+getwd()
+raster.data.dir <- "/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/raster-data"
+dir()
+dir(/Homogeneous)
+dir(Homogeneous)
+dir(Homogeneous)
+blocks <- scan(file=paste(raster.data.dir, "Homogeneous", "quarter1.asc", sep="/"))
+library(trk)
+blocks <- read.raster(file=paste(raster.data.dir, "Homogeneous", "quarter1.asc", sep="/"))
+plot(blocks)
+blocks <- read.raster(file=paste(raster.data.dir, "Homogeneous", "blocks.asc", sep="/"))#
+plot(blocks)
+blocks <- read.raster(file=paste(raster.data.dir, "/Homogeneous/blocks.asc", sep=""))#
+plot(blocks)
+qq <- 1#
+maxent <- read.raster(file=paste(raster.data.dir, "/Homogeneous/quarter", qq, ".asc", sep=""))#
+plot(maxent)
+?split
+class(maxent@data)
+split(maxent@data, blocks@data)
+maxent.spl <- split(maxent@data, blocks@data)
+?lapply
+lapply(maxent.spl, FUN="mean")
+sapply(maxent.spl, FUN="mean")
+?mean
+sapply(maxent.spl, FUN=list("mean", na.rm=TRUE))
+?mean
+?lapply
+sapply(maxent.spl, FUN=mean)
+mean.na.rm <- function(x) return(mean(x))
+sapply(maxent.spl, FUN=mean.na.rm)
+mean.na.rm <- function(x) return(mean(x[!is.na(x)]))
+sapply(maxent.spl, FUN=mean.na.rm)
+mean.maxent <- sapply(maxent.spl, FUN=mean.na.rm)
+mean.maxent.resc <- mean.maxent/max(mean.maxent)
+mean.maxent.resc
+paste(mean.maxent.resc, sep=", ", collapse=TRUE)
+paste(mean.maxent.resc, sep=", ", collapse="")
+paste(mean.maxent.resc, collapse=", ")
+paste(mean.maxent.resc, collapse=",")
+message(paste("Homogeneous", qq, sep=""))
+message(paste("Homogeneous", qq, sep=""))#
+paste(mean.maxent.resc, collapse=",")
+{#
+message(paste("Homogeneous", qq, sep=""))#
+paste(mean.maxent.resc, collapse=",")#
+}
+qq
+	maxent <- read.raster(file=paste(raster.data.dir, "/Kattegat/quarter", qq, ".asc", sep=""))#
+	plot(maxent)
+	# find block averages#
+	maxent.spl <- split(maxent@data, blocks@data)#
+	mean.na.rm <- function(x) return(mean(x[!is.na(x)]))#
+	mean.maxent <- sapply(maxent.spl, FUN=mean.na.rm)
+mean.maxent
+mean.maxent
+max(mean.maxent)
+maxent@NODATA.value
+slotNames(maxent)
+ifelse(maxent@data == maxent@NODATA_value, NA, maxent@data)
+	maxent@data <- ifelse(maxent@data == maxent@NODATA_value, NA, maxent@data)
+	maxent@data <- ifelse(maxent@data == maxent@NODATA_value, NA, maxent@data)#
+	maxent.spl <- split(maxent@data, blocks@data)#
+	mean.na.rm <- function(x) return(mean(x[!is.na(x)]))#
+	mean.maxent <- sapply(maxent.spl, FUN=mean.na.rm)
+mean.maxent
+	mean.maxent <- sapply(maxent.spl, FUN=mean)
+mean.maxent
+	mean.maxent <- sapply(maxent.spl, FUN=mean.na.rm)
+mean.maxent
+is.na(mean.maxent)
+	mean.maxent <- ifelse(is.na(mean.maxent), 0, mean.maxent)
+mean.maxent
+	mean.maxent.resc <- mean.maxent/max(mean.maxent)  # Rescale so that max=1#
+	{#
+		message(paste("Homogeneous", qq, sep=""))#
+		paste(mean.maxent.resc, collapse=",")#
+	}
+		paste(round(mean.maxent.resc,4), collapse=",")
+for (qq in 1:4) {#
+	maxent <- read.raster(file=paste(raster.data.dir, "/Kattegat/quarter", qq, ".asc", sep=""))#
+	plot(maxent)#
+	# find block averages, but find NAs first#
+	maxent@data <- ifelse(maxent@data == maxent@NODATA_value, NA, maxent@data)#
+	maxent.spl <- split(maxent@data, blocks@data)#
+	mean.na.rm <- function(x) return(mean(x[!is.na(x)]))#
+	mean.maxent <- sapply(maxent.spl, FUN=mean.na.rm)#
+	mean.maxent <- ifelse(is.na(mean.maxent), 0, mean.maxent)#
+	mean.maxent.resc <- mean.maxent/max(mean.maxent)  # Rescale so that max=1#
+	{#
+		message(paste("Homogeneous", qq, sep=""))#
+		paste(round(mean.maxent.resc,4), collapse=",")#
+	}#
+}
+for (qq in 1:4) {#
+	maxent <- read.raster(file=paste(raster.data.dir, "/Kattegat/quarter", qq, ".asc", sep=""))#
+	plot(maxent)#
+	# find block averages, but find NAs first#
+	maxent@data <- ifelse(maxent@data == maxent@NODATA_value, NA, maxent@data)#
+	maxent.spl <- split(maxent@data, blocks@data)#
+	mean.na.rm <- function(x) return(mean(x[!is.na(x)]))#
+	mean.maxent <- sapply(maxent.spl, FUN=mean.na.rm)#
+	mean.maxent <- ifelse(is.na(mean.maxent), 0, mean.maxent)#
+	mean.maxent.resc <- mean.maxent/max(mean.maxent)  # Rescale so that max=1#
+	{#
+		message(paste("Homogeneous", qq, sep=""))#
+		message(paste(round(mean.maxent.resc,4), collapse=","))#
+	}#
+}
+plot(blocks)
+bbox(blocks)
+bbox(blocks)[1,]
+v.width <- diff(bbox(blocks)[1,])
+max(bbox(blocks)[1,])-min(bbox(blocks)[1,])
+max(bbox(blocks)[1,])
+min(bbox(blocks)[1,])
+v.width <- max(bbox(blocks)[1,])-min(bbox(blocks)[1,])
+v.width
+range(blocks@data)
+block.width <- max(bbox(blocks)[1,])-min(bbox(blocks)[1,])#
+block.height <- max(bbox(blocks)[2,])-min(bbox(blocks)[2,])
+block.width
+block.height
+block.width <- max(bbox(blocks)[1,])-min(bbox(blocks)[1,]) / blocks.v#
+block.height <- max(bbox(blocks)[2,])-min(bbox(blocks)[2,]) / blocks.h
+blocks.v <- 6  	  # vertical#
+blocks.h <- 10    # horizontal#
+block.width <- max(bbox(blocks)[1,])-min(bbox(blocks)[1,]) / blocks.v#
+block.height <- max(bbox(blocks)[2,])-min(bbox(blocks)[2,]) / blocks.h
+block.width
+block.height
+bbox(blocks)
+min(bbox(blocks)[2,]
+)
+max(bbox(blocks)[2,])
+blocks.h
+range(blocks@data)
+bbox(blocks)[1,]
+bbox(blocks)
+bbox(blocks)[1,1]
+x.means <- bbox(blocks)[1,1] + 50*400 + 1:6*(100*400)
+x.means
+x.means <- bbox(blocks)[1,1] + 50*400 # + 1:6*(100*400)
+x.means
+x.means <- bbox(blocks)[1,1] + 50*400 + 0:5*(100*400)
+x.means
+bbox(blocks)
+bbox(blocks)[2,1]
+y.means <- bbox(blocks)[2,1] + 50*400 + 0:9*(100*400)
+y.means
+points(x.means, y.means)
+points(x.means, y.means[4:10])
+y.means[4:10]
+points(x.means, y.means[5:10])
+table(x.means, y.means)
+x.means <- bbox(blocks)[1,1] + 50*400 + 0:5*(100*400)  # each cell is 400 m wide, and UTM is in m#
+y.means <- bbox(blocks)[2,1] + 50*400 + 0:9*(100*400)#
+table(x.means, y.means)
+outer(x.means, y.means, fun="paste")
+lapply(x.means, y.means, fun="paste")
+data.frame(rep(x.means, 10))
+data.frame("x"=rep(x.means, 10), "y"=rep(y.means, 6))
+data.frame("x"=rep(x.means, each=10), "y"=rep(y.means, 6))
+data.frame("x"=rep(x.means, 10), "y"=rep(y.means, each=6))
+x.means
+rep(x.means, 10)
+rep(y.means, each=6)
+data.frame("x"=rep(x.means, 10), "y"=rep(y.means, each=6))
+data.frame("block"=1:60, "x"=rep(x.means, 10), "y"=rep(y.means, each=6))
+block.centres <- data.frame("block"=1:60, "x"=rep(x.means, 10), "y"=rep(y.means, each=6))
+t(as.matrix(block.centres))
+x.means <- 50 + 0:5*100  # each cell is 400 m wide, and UTM is in m#
+y.means <- 50*400 + 0:9*(100*400)
+x.means
+y.means
+y.means <- 50*400 + 0:9*100
+y.means <- 50 + 0:9*100
+y.means
+y.means <- 1000 - (50 + 0:9*100)
+y.means
+#
+raster.data.dir <- "/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/raster-data"#
+library(trk)#
+blocks <- read.raster(file=paste(raster.data.dir, "/Homogeneous/blocks.asc", sep=""))#
+plot(blocks)#
+# Homogeneous landsc:#
+qq <- 1#
+maxent <- read.raster(file=paste(raster.data.dir, "/Homogeneous/quarter", qq, ".asc", sep=""))#
+plot(maxent)#
+# find block averages#
+maxent.spl <- split(maxent@data, blocks@data)#
+mean.na.rm <- function(x) return(mean(x[!is.na(x)]))#
+mean.maxent <- sapply(maxent.spl, FUN=mean.na.rm)#
+mean.maxent.resc <- mean.maxent/max(mean.maxent)  # Rescale so that max=1#
+{#
+message(paste("Homogeneous", qq, sep=""))#
+paste(round(mean.maxent.resc,4), collapse=" ")
+}
+block.centres$x
+block.centres$y
+for (qq in 1:4) {#
+	maxent <- read.raster(file=paste(raster.data.dir, "/Kattegat/quarter", qq, ".asc", sep=""))#
+	# plot(maxent)#
+	# find block averages, but find NAs first#
+	maxent@data <- ifelse(maxent@data == maxent@NODATA_value, NA, maxent@data)#
+	maxent.spl <- split(maxent@data, blocks@data)#
+	mean.na.rm <- function(x) return(mean(x[!is.na(x)]))#
+	mean.maxent <- sapply(maxent.spl, FUN=mean.na.rm)#
+	mean.maxent <- ifelse(is.na(mean.maxent), 0, mean.maxent)#
+	mean.maxent.resc <- mean.maxent/max(mean.maxent)  # Rescale so that max=1#
+	{#
+		message(paste("Homogeneous", qq, sep=""))#
+		message(paste(round(mean.maxent.resc,4), collapse=" "))#
+	}#
+}
+block.centres$y[39]
+block.centres[39 ,]
+# Find block centres -- the places that porps should be attracted to.#
+# Each block is 40x40 km = 100 x 100 cells. The 60 blocks are numbered by row, #
+# starting in the upper left corner.#
+range(blocks@data)#
+x.means.utm <- bbox(blocks)[1,1] + 50*400 + 0:5*(100*400)  # each cell is 400 m wide, and UTM is in m#
+y.means.utm <- bbox(blocks)[2,1] + 50*400 + 0:9*(100*400)#
+x.means <- 50 + 0:5*100  # each cell is 400 m wide, and UTM is in m#
+y.means <- 1000 - (50 + 0:9*100)  # block numbers start in upper left corner, coords in lower left#
+block.centres <- data.frame("block"=1:60, "x"=rep(x.means, 10), "y"=rep(y.means, each=6))#
+#
+block.centres[39 ,]
+block.centres
+block.centres
+block.centres$x
+block.centres$y
+#
+raster.data.dir <- "/Volumes/nabenielsen/Documents/Porpoise modelling/Porpoise pop model/raster-data"#
+library(trk)#
+blocks <- read.raster(file=paste(raster.data.dir, "/Homogeneous/blocks.asc", sep=""))#
+plot(blocks)#
+# Homogeneous landsc:#
+qq <- 1#
+maxent <- read.raster(file=paste(raster.data.dir, "/Homogeneous/quarter", qq, ".asc", sep=""))#
+plot(maxent)#
+# find block averages#
+maxent.spl <- split(maxent@data, blocks@data)#
+sum.na.rm <- function(x) return(sum(x[!is.na(x)]))#
+sum.maxent <- sapply(maxent.spl, FUN=sum.na.rm)#
+sum.maxent.resc <- sum.maxent/max(sum.maxent)  # Rescale so that max=1#
+{#
+	message(paste("Homogeneous", qq, sep=""))#
+	paste(round(sum.maxent.resc,4), collapse=" ")#
+}
+#
+# Do the same thing for Kattegat:#
+for (qq in 1:4) {#
+	maxent <- read.raster(file=paste(raster.data.dir, "/Kattegat/quarter", qq, ".asc", sep=""))#
+	# plot(maxent)#
+	# find block averages, but find NAs first#
+	maxent@data <- ifelse(maxent@data == maxent@NODATA_value, NA, maxent@data)#
+	maxent.spl <- split(maxent@data, blocks@data)#
+	sum.na.rm <- function(x) return(sum(x[!is.na(x)]))#
+	sum.maxent <- sapply(maxent.spl, FUN=sum.na.rm)#
+	sum.maxent <- ifelse(is.na(sum.maxent), 0, sum.maxent)#
+	sum.maxent.resc <- sum.maxent/max(sum.maxent)  # Rescale so that max=1#
+	{#
+		message(paste("Kattegat", qq, sep=""))#
+		message(paste(round(sum.maxent.resc,4), collapse=" "))#
+	}#
+}
+#
+# Do the same thing for Kattegat:#
+for (qq in 1:4) {#
+	maxent <- read.raster(file=paste(raster.data.dir, "/Kattegat/quarter", qq, ".asc", sep=""))#
+	# plot(maxent)#
+	# find block averages, but find NAs first#
+	maxent@data <- ifelse(maxent@data == maxent@NODATA_value, NA, maxent@data)#
+	maxent.spl <- split(maxent@data, blocks@data)#
+	mean.na.rm <- function(x) return(mean(x[!is.na(x)]))#
+	mean.maxent <- sapply(maxent.spl, FUN=mean.na.rm)#
+	mean.maxent <- ifelse(is.na(mean.maxent), 0, mean.maxent)#
+	mean.maxent.resc <- mean.maxent/max(mean.maxent)  # Rescale so that max=1#
+	{#
+		message(paste("Kattegat", qq, sep=""))#
+		message(paste(round(mean.maxent.resc,4), collapse=" "))#
+	}#
+}
